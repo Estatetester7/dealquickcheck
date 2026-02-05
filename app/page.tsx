@@ -168,8 +168,7 @@ export default function Home() {
     // NOI = (rent*(1-vacancy) + other) - fixed - rent*(rep+capex+mgmt)
     // Set NOI - PI = 0 => rent*(1-vacancy - rep-capex-mgmt) + other - fixed - PI = 0
     const coeff = (1 - vacancy) - (repairs + capex + mgmt);
-    const breakEvenRent =
-      coeff !== 0 ? (fixedCostsNoDebt + mortgagePI - other) / coeff : Infinity;
+    const breakEvenRent = coeff !== 0 ? (fixedCostsNoDebt + mortgagePI - other) / coeff : Infinity;
 
     const decision = scoreDecision({
       netCashFlow,
@@ -245,11 +244,11 @@ export default function Home() {
     lines.push(``);
     lines.push(`WHY ${result.decision.isGo ? 'GO' : 'NO-GO'}`);
     if (result.decision.reasons.length === 0) lines.push(`No blocking issues found for screening thresholds.`);
-    result.decision.reasons.forEach(r => lines.push(`- ${r}`));
+    result.decision.reasons.forEach((r) => lines.push(`- ${r}`));
     if (result.decision.warnings.length) {
       lines.push(``);
       lines.push(`WARNINGS`);
-      result.decision.warnings.forEach(w => lines.push(`- ${w}`));
+      result.decision.warnings.forEach((w) => lines.push(`- ${w}`));
     }
     lines.push(``);
     lines.push(`NOTE: Fast screening tool — not full underwriting.`);
@@ -404,8 +403,15 @@ export default function Home() {
         }}
       >
         <div style={styles.verdictTop}>
-          <div style={styles.verdictTitle}>
-            {result.decision.isGo ? 'GO (screening)' : 'NO-GO (screening)'}
+          <div>
+            <div style={styles.verdictTitle}>
+              {result.decision.isGo ? 'GO (screening)' : 'NO-GO (screening)'}
+            </div>
+
+            {/* NEW: disclaimer directly under the verdict */}
+            <div style={{ marginTop: 6, fontSize: 12, color: 'rgba(255,255,255,0.72)' }}>
+              This is a fast screening result based on current inputs — not a full underwriting or investment recommendation.
+            </div>
           </div>
 
           <div style={styles.primarySignals}>
@@ -419,7 +425,7 @@ export default function Home() {
         </div>
 
         <div style={styles.whyBox}>
-          <div style={styles.whyTitle}>Why this is marked {result.decision.isGo ? 'GO' : 'NO-GO'}:</div>
+          <div style={styles.whyTitle}>Why this screens as {result.decision.isGo ? 'GO' : 'NO-GO'}:</div>
 
           {result.decision.reasons.length === 0 ? (
             <div style={styles.whyItem}>No blocking issues found for the screening thresholds.</div>
@@ -440,8 +446,9 @@ export default function Home() {
 
           <div style={styles.nextStep}>{result.decision.nextStep}</div>
 
+          {/* UPDATED: guardrail copy */}
           <div style={styles.guardrail}>
-            Guardrail note: these thresholds are for fast screening. Always verify rent comps + expenses and run full underwriting.
+            Guardrail: This tool is for quick screening only. Always verify rent comps, expenses, and run full underwriting before making decisions.
             {section8Mode && ' Section 8 mode is especially sensitive to inspection/turnover assumptions.'}
           </div>
         </div>
@@ -465,7 +472,7 @@ export default function Home() {
 
               <button
                 type="button"
-                onClick={() => setSection8Mode(v => !v)}
+                onClick={() => setSection8Mode((v) => !v)}
                 style={{
                   ...styles.toggle,
                   ...(section8Mode ? styles.toggleOn : styles.toggleOff),
@@ -523,7 +530,7 @@ export default function Home() {
 
           <div style={styles.rowBetween}>
             <button
-              onClick={() => setShowBreakdown(v => !v)}
+              onClick={() => setShowBreakdown((v) => !v)}
               style={styles.secondaryBtn}
               type="button"
             >
